@@ -17,11 +17,13 @@ namespace WindowsFormsApp5
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        BindingList<string> Currencies = new BindingList<string>();
         public Form1()
         {
             InitializeComponent();
             dataGridView1.DataSource = Rates;
             RefreshData();
+            comboBox1.DataSource = Currencies;
 
         }
         public void GetCurrs()
@@ -55,7 +57,11 @@ namespace WindowsFormsApp5
                 var value = decimal.Parse(childElement.InnerText);
                 if (unit != 0)
                     rate.Value = value / unit;
+
+                if (childElement == null)
+                    continue;
             }
+            
         }
 
         public void chartRateData()
