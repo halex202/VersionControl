@@ -21,6 +21,7 @@ namespace WindowsFormsApp5
         {
             InitializeComponent();
             dataGridView1.DataSource = Rates;
+            RefreshData();
 
         }
         public void GetCurrs()
@@ -29,9 +30,9 @@ namespace WindowsFormsApp5
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = comboBox1.SelectedItem.ToString(),
+                startDate = dateTimePicker1.Value.Date.ToString("yyyy-MM-dd"),
+                endDate = dateTimePicker2.Value.Date.ToString("yyyy-MM-dd")
             };
             var response = mnbService.GetExchangeRates(request);
             var result = response.GetExchangeRatesResult;
@@ -43,10 +44,10 @@ namespace WindowsFormsApp5
             {
                 var rate = new RateData();
                 Rates.Add(rate);
-            
+
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
-               
+
                 var childElement = (XmlElement)element.ChildNodes[0];
                 rate.Currency = childElement.GetAttribute("curr");
 
@@ -75,6 +76,26 @@ namespace WindowsFormsApp5
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
         }
-        
+        public void RefreshData()
+        {
+            Rates.Clear();
+            GetCurrs();
+            chartRateData();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
     }
 }
