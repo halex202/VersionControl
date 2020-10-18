@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
 using WindowsFormsApp5.Entities;
 using WindowsFormsApp5.MnbServiceReference;
@@ -19,7 +20,8 @@ namespace WindowsFormsApp5
         public Form1()
         {
             InitializeComponent();
-            
+            dataGridView1.DataSource = Rates;
+
         }
         public void GetCurrs()
         {
@@ -53,6 +55,25 @@ namespace WindowsFormsApp5
                 if (unit != 0)
                     rate.Value = value / unit;
             }
+        }
+
+        public void chartRateData()
+        {
+            chartRate.DataSource = Rates;
+
+            var series = chartRate.Series[0];
+            series.ChartType = SeriesChartType.Line;
+            series.XValueMember = "Date";
+            series.YValueMembers = "Value";
+            series.BorderWidth = 2;
+
+            var legend = chartRate.Legends[0];
+            legend.Enabled = false;
+
+            var chartArea = chartRate.ChartAreas[0];
+            chartArea.AxisX.MajorGrid.Enabled = false;
+            chartArea.AxisY.MajorGrid.Enabled = false;
+            chartArea.AxisY.IsStartedFromZero = false;
         }
         
     }
