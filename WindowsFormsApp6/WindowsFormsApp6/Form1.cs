@@ -17,6 +17,8 @@ namespace WindowsFormsApp6
         List<Person> Population = new List<Person>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
+
+        Random rng = new Random(1234);
         List<Person> GetPopulation(string csvpath)
         {
             List<Person> population = new List<Person>();
