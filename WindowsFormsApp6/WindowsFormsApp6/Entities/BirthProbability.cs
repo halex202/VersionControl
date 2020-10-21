@@ -9,7 +9,8 @@ namespace WindowsFormsApp6.Entities
     class BirthProbability
     {
         public int age { get; set; }
-        public int Gender { get; set; }
+        
+        public int numberOfChildren { get; set; }
         public double P { get; set; }
     }
 }

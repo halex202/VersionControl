@@ -51,8 +51,8 @@ namespace WindowsFormsApp6
                     BirthProbabilities.Add(new BirthProbability()
                     {
                         age = int.Parse(line[0]),
-                        Gender = (int)(Gender)Enum.Parse(typeof(Gender), line[1]),
-                        P= double.Parse(line[2])
+                        numberOfChildren = int.Parse(line[1]),
+                        P = double.Parse(line[2])
                     });
                 }
             }
@@ -71,7 +71,7 @@ namespace WindowsFormsApp6
                     DeathProbabilities.Add(new DeathProbability()
                     {
                         age= int.Parse(line[0]),
-                        numberOfChildren = int.Parse(line[1]),
+                        Gender = (Gender)Enum.Parse(typeof(Gender), line[1]),
                         PDeathProbability = double.Parse(line[2])
                     });
                 }
@@ -103,6 +103,40 @@ namespace WindowsFormsApp6
                                     select x).Count();
                 Console.WriteLine(
                     string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+            }
+        }
+        private void SimStep(int year, Person person)
+        {
+            
+            if (!person.IsAlive) return;
+
+            
+            byte age = (byte)(year - person.BirthYear);
+
+           
+            double pDeath = (from x in DeathProbabilities
+                             where x.Gender == person.Gender && x.age == age
+                             select x.PDeathProbability).FirstOrDefault();
+           
+            if (rng.NextDouble() <= pDeath)
+                person.IsAlive = false;
+
+            
+            if (person.IsAlive && person.Gender == Gender.Female)
+            {
+
+                double pBirth = (from x in BirthProbabilities
+                                 where x.age == age
+                                 select x.P).FirstOrDefault();
+
+                if (rng.NextDouble() <= pBirth)
+                {
+                    Person újszülött = new Person();
+                    újszülött.BirthYear = year;
+                    újszülött.NbrOfChildren = 0;
+                    újszülött.Gender = (Gender)(rng.Next(1, 3));
+                    Population.Add(újszülött);
+                }
             }
         }
 
