@@ -7,11 +7,11 @@ using WindowsFormsApp7.Abstractions;
 
 namespace WindowsFormsApp7.Entities
 {
-    public class BallFactory : IToyFactory
+    public class CarFactory : IToyFactory
     {
         public Toy CreateNew()
         {
-            return new Ball();
+            return new Car();
         }
     }
 }
