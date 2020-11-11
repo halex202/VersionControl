@@ -18,6 +18,12 @@ namespace WindowsFormsApp7.Entities
             Height = Width;
             Paint += Ball_Paint;
         }
+        public SolidBrush BallColor { get; private set; }
+
+        public Ball(Color color)
+        {
+            BallColor = new SolidBrush(color);
+        }
 
         private void Ball_Paint(object sender, PaintEventArgs e)
         {
@@ -26,12 +32,13 @@ namespace WindowsFormsApp7.Entities
 
         protected override void DrawImage(Graphics g)
         {
-            g.FillEllipse(new SolidBrush(Color.Blue), 0, 0, Width, Height);
+            g.FillEllipse(BallColor, 0, 0, Width, Height);
         }
 
         public void MoveBall()
         {
             Left += 1;
         }
+       
     }
 }
